@@ -1,0 +1,534 @@
+// ==UserScript==
+// @name         language zh
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @description  Automatically sell crafted items.
+// @author       dandan
+// @match        https://townstar.sandbox-games.com/launch/
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    var create=false;
+
+
+    new MutationObserver(function(mutations) {
+        let airdropcollected = 0;
+
+        if (document.getElementById("playnow-container") && document.getElementById("playnow-container").style.visibility !== "hidden") {
+            if(typeof Game == 'undefined' || (Game && Game.gameData == null)) {
+                window.location.reload();
+            } else {
+                document.getElementById("playButton").click();
+                console.log(Date.now() + ' ---===ACTIVATING AUTO SELL===---');
+                findtext();
+                help();
+
+
+
+            }
+        }
+    }).observe(document, {childList: true, subtree: true});
+
+
+    async function findtext() {
+        console.log('findtext');
+        setInterval(function () {
+            console.log("activetitle");
+            activetitle();
+        }, 3000);
+    }
+
+    async function help() {
+        setInterval(function () {
+            if(create)return;
+
+            var body=document.getElementsByClassName("hud");
+
+
+            if(body&&body.length>0)
+            {
+                console.log("body",body[0]);
+                //教程
+                let helpbtn = document.createElement('button');
+                helpbtn.style.cssText = 'width:80px;font-size:20px;top:8px;z-index:99999;border-radius:10px;opacity:0.9;position: absolute; left: calc(50% - 42px);;pointer-events: all;';
+                helpbtn.textContent = '教程';
+                helpbtn.addEventListener( 'click', function(){
+                     window.open("https://www.bilibili.com/video/BV1D64y1z7nt?from=search&seid=6224351694293057820&spm_id_from=333.337.0.0");
+                })
+                body[0].appendChild(helpbtn);
+
+                create=true;
+
+                //社群
+                let shequn = document.createElement('button');
+                shequn.style.cssText = 'width:80px;font-size:20px;top:8px;z-index:99999;border-radius:10px;opacity:0.9;position: absolute; left:calc(50% + 42px);pointer-events: all;background-color:#049FE7;color:#FFFFFF;';
+                shequn.textContent = '社群';
+                shequn.addEventListener( 'click', function(){
+                    if(document.getElementById('wxcode').style.visibility=='visible')document.getElementById('wxcode').style.visibility='hidden';
+                    else document.getElementById('wxcode').style.visibility='visible';
+                })
+                body[0].appendChild(shequn);
+
+                //二维码
+                let helpweb = document.createElement('img');
+                helpweb.style.cssText ='width:380px;height:490px;top:8px;z-index:99999;border-radius:5px;position: absolute; left:calc(50% + 130px);pointer-events: all;visibility:hidden;';
+                helpweb.width=380;
+                helpweb.height=490;
+                helpweb.id="wxcode";
+                helpweb.src="https://oss.jingwucaotang.com/linyiyun/poe/code.png";
+                helpweb.addEventListener( 'click', function(){
+                    document.getElementById('wxcode').style.visibility='hidden';
+                })
+                body[0].appendChild(helpweb);
+
+
+
+            }else console.log("no body");
+
+        }, 3000);
+
+
+
+    }
+
+
+   function activetitle() {
+
+        //首页hud-days-left
+        var right=document.getElementsByClassName("hud-days-left");
+        if(right&&right.length>0)
+        {
+            right[0].innerText="剩余 "+right[0].innerText.replace("days left","天")
+        }
+
+        //商城其他
+        var texth1=document.getElementsByTagName("h1");
+        if(texth1)
+        for(var i=0;i<texth1.length;++i)
+        {
+            if(texth1[i].innerText=="Store")texth1[i].innerText="商城";
+            if(texth1[i].innerText=="Store")texth1[i].innerText="商城";
+            if(texth1[i].innerText=="Bakery")texth1[i].innerText="面包店";
+            if(texth1[i].innerText=="Cabernet Vines")texth1[i].innerText="紫葡萄";
+            if(texth1[i].innerText=="Cakery")texth1[i].innerText="蛋糕店";
+            if(texth1[i].innerText=="Chardonnay Vines")texth1[i].innerText="绿葡萄";
+            if(texth1[i].innerText=="Cotton Field")texth1[i].innerText="棉花";
+            if(texth1[i].innerText=="Farm House")texth1[i].innerText="农场工人";
+            if(texth1[i].innerText=="Farm Tractor")texth1[i].innerText="农场工人2";
+            if(texth1[i].innerText=="Lumber Yard")texth1[i].innerText="木材仓库";
+            if(texth1[i].innerText=="Lumberjack House")texth1[i].innerText="砍树工人";
+            if(texth1[i].innerText=="Oak Tree Farm")texth1[i].innerText="树林";
+            if(texth1[i].innerText=="Pinot Noir Vines")texth1[i].innerText="黑葡萄";
+            if(texth1[i].innerText=="Pumpkin Patch")texth1[i].innerText="南瓜";
+            if(texth1[i].innerText=="Salt Field")texth1[i].innerText="海盐";
+            if(texth1[i].innerText=="Silo")texth1[i].innerText="粮食仓库";
+            if(texth1[i].innerText=="Storehouse")texth1[i].innerText="仓库";
+            if(texth1[i].innerText=="Sugarcane Field")texth1[i].innerText="甘蔗";
+            if(texth1[i].innerText=="The Logger House")texth1[i].innerText="伐木工人";
+            if(texth1[i].innerText=="Tree Farm")texth1[i].innerText="树木";
+            if(texth1[i].innerText=="Well")texth1[i].innerText="水井";
+            if(texth1[i].innerText=="Wheat Field")texth1[i].innerText="小麦";
+            if(texth1[i].innerText=="Wind Pump")texth1[i].innerText="风力水泵";
+            if(texth1[i].innerText=="Wind Mill")texth1[i].innerText="风力机";
+            if(texth1[i].innerText=="Winery")texth1[i].innerText="酒庄";
+            if(texth1[i].innerText=="Wood Shed")texth1[i].innerText="木头仓库";
+            if(texth1[i].innerText=="ATV")texth1[i].innerText="饲养员进阶";
+            if(texth1[i].innerText=="Chicken Coop")texth1[i].innerText="鸡笼";
+            if(texth1[i].innerText=="Feed Mill")texth1[i].innerText="饲料加工";
+            if(texth1[i].innerText=="Milk Barn")texth1[i].innerText="牛棚";
+            if(texth1[i].innerText=="Ranch House")texth1[i].innerText="饲养员";
+            if(texth1[i].innerText=="Sheep Pen")texth1[i].innerText="羊棚";
+            if(texth1[i].innerText=="Trough")texth1[i].innerText="饲料槽";
+            if(texth1[i].innerText=="Dirt Road")texth1[i].innerText="水泥路";
+            if(texth1[i].innerText=="Pasture")texth1[i].innerText="牧场";
+            if(texth1[i].innerText=="Paved Road")texth1[i].innerText="泊油路";
+            if(texth1[i].innerText=="Pond")texth1[i].innerText="池塘";
+            if(texth1[i].innerText=="Builder House")texth1[i].innerText="建筑工人";
+            if(texth1[i].innerText=="Fabric Plant")texth1[i].innerText="面料工厂";
+            if(texth1[i].innerText=="Forklift")texth1[i].innerText="叉车";
+            if(texth1[i].innerText=="Fuel Storage")texth1[i].innerText="燃油储存";
+            if(texth1[i].innerText=="Glass Factory")texth1[i].innerText="玻璃工厂";
+            if(texth1[i].innerText=="Lunber Mill")texth1[i].innerText="木材加工";
+            if(texth1[i].innerText=="Mine")texth1[i].innerText="矿工";
+            if(texth1[i].innerText=="Nuclear Power")texth1[i].innerText="核能";
+            if(texth1[i].innerText=="Oil Pump")texth1[i].innerText="油泵";
+            if(texth1[i].innerText=="Power Plant")texth1[i].innerText="电厂";
+            if(texth1[i].innerText=="Refinery")texth1[i].innerText="炼油厂";
+            if(texth1[i].innerText=="Sand Mine")texth1[i].innerText="沙场";
+            if(texth1[i].innerText=="Steel Mill")texth1[i].innerText="钢厂";
+            if(texth1[i].innerText=="Warehouse")texth1[i].innerText="仓库";
+            if(texth1[i].innerText=="Water Facility")texth1[i].innerText="水桶制造";
+            if(texth1[i].innerText=="Water Pump")texth1[i].innerText="水泵";
+            if(texth1[i].innerText=="Wind Turbine")texth1[i].innerText="风力发电机";
+            if(texth1[i].innerText=="Worker house")texth1[i].innerText="工人";
+            if(texth1[i].innerText=="Freight Pier")texth1[i].innerText="货运码头";
+            if(texth1[i].innerText=="Trade Depot")texth1[i].innerText="贸易司机";
+            if(texth1[i].innerText=="Trade Pier")texth1[i].innerText="贸易码头";
+
+            texth1[i].innerText=texth1[i].innerText.replace("Settings","设置");
+            texth1[i].innerText=texth1[i].innerText.replace("Leaderboard","排行榜");
+        }
+
+         //商品详情界面
+        var texth3=document.getElementsByTagName("h3");
+        if(texth3)
+        for(i=0;i<texth3.length;++i)
+        {
+            if(texth3[i].innerText=="Butter")texth3[i].innerText="黄油";
+            if(texth3[i].innerText=="Rotate")texth3[i].innerText="旋转";
+            if(texth3[i].innerText=="Remove")texth3[i].innerText="摧毁";
+            if(texth3[i].innerText=="Cancel")texth3[i].innerText="摧毁";
+            if(texth3[i].innerText=="Craft")texth3[i].innerText="工艺";
+            if(texth3[i].innerText=="Flush")texth3[i].innerText="重置";
+            if(texth3[i].innerText=="Sell")texth3[i].innerText="销售货物";
+            if(texth3[i].innerText=="Dough")texth3[i].innerText="面团";
+            if(texth3[i].innerText=="Baguette")texth3[i].innerText="面包";
+            if(texth3[i].innerText=="Cabernet Grapes")texth3[i].innerText="赤霞葡萄";
+            if(texth3[i].innerText=="Batter")texth3[i].innerText="面糊";
+            if(texth3[i].innerText=="Cake")texth3[i].innerText="蛋糕";
+            if(texth3[i].innerText=="Pumpkin Pie")texth3[i].innerText="南瓜派";
+            if(texth3[i].innerText=="Chardonnay Grapes")texth3[i].innerText="霞多丽葡萄";
+            if(texth3[i].innerText=="Cotton")texth3[i].innerText="棉布";
+            if(texth3[i].innerText=="Oak Wood")texth3[i].innerText="橡木";
+            if(texth3[i].innerText=="Pinot Noir Grapes")texth3[i].innerText="黑比诺葡萄";
+            if(texth3[i].innerText=="Pumpkin")texth3[i].innerText="南瓜";
+            if(texth3[i].innerText=="Brine")texth3[i].innerText="盐水";
+            if(texth3[i].innerText=="Sugarcane")texth3[i].innerText="甘蔗";
+            if(texth3[i].innerText=="Wheat")texth3[i].innerText="小麦";
+            if(texth3[i].innerText=="Water")texth3[i].innerText="水";
+            if(texth3[i].innerText=="Flour")texth3[i].innerText="面粉";
+            if(texth3[i].innerText=="Sugar")texth3[i].innerText="糖";
+            if(texth3[i].innerText=="Salt")texth3[i].innerText="盐";
+            if(texth3[i].innerText=="Pinot Noir")texth3[i].innerText="黑比诺";
+            if(texth3[i].innerText=="Cabernet Sauvignon")texth3[i].innerText="赤霞珠";
+            if(texth3[i].innerText=="Chardonnay")texth3[i].innerText="霞多丽";
+            if(texth3[i].innerText=="Eggs")texth3[i].innerText="蛋";
+            if(texth3[i].innerText=="Feed")texth3[i].innerText="饲料";
+            if(texth3[i].innerText=="Milk")texth3[i].innerText="牛奶";
+            if(texth3[i].innerText=="Wool")texth3[i].innerText="羊毛";
+            if(texth3[i].innerText=="Cotton Yarn")texth3[i].innerText="棉线团";
+            if(texth3[i].innerText=="Wool Yarm")texth3[i].innerText="毛纱";
+            if(texth3[i].innerText=="Uniforms")texth3[i].innerText="制服";
+            if(texth3[i].innerText=="Wine Bottle")texth3[i].innerText="酒瓶";
+            if(texth3[i].innerText=="Lumber")texth3[i].innerText="木材";
+            if(texth3[i].innerText=="Oak Barrel")texth3[i].innerText="橡木桶";
+            if(texth3[i].innerText=="Lron")texth3[i].innerText="铁";
+            if(texth3[i].innerText=="Chromium")texth3[i].innerText="铬";
+            if(texth3[i].innerText=="Limestone")texth3[i].innerText="石灰石";
+            if(texth3[i].innerText=="Energy")texth3[i].innerText="能源";
+            if(texth3[i].innerText=="Crude Oil")texth3[i].innerText="原油";
+            if(texth3[i].innerText=="Petroleum")texth3[i].innerText="石油";
+            if(texth3[i].innerText=="Gasoline")texth3[i].innerText="汽油";
+            if(texth3[i].innerText=="Jet Fuel")texth3[i].innerText="喷气燃料";
+            if(texth3[i].innerText=="Silica")texth3[i].innerText="二氧化硅";
+            if(texth3[i].innerText=="Steel")texth3[i].innerText="钢";
+            if(texth3[i].innerText=="Blue Steel")texth3[i].innerText="蓝钢";
+            if(texth3[i].innerText=="Water Drum")texth3[i].innerText="水桶";
+
+
+
+        }
+
+        //商品标题
+        var texth2=document.getElementsByTagName("h2");
+        if(texth2)
+        for(i=0;i<texth2.length;++i)
+        {
+           if(texth2[i].innerText=="Bakery")texth2[i].innerText="面包店";
+            if(texth2[i].innerText=="Cabernet Vines")texth2[i].innerText="紫葡萄";
+            if(texth2[i].innerText=="Cakery")texth2[i].innerText="蛋糕店";
+            if(texth2[i].innerText=="Chardonnay Vines")texth2[i].innerText="绿葡萄";
+            if(texth2[i].innerText=="Cotton Field")texth2[i].innerText="棉花";
+            if(texth2[i].innerText=="Farm House")texth2[i].innerText="农场工人";
+            if(texth2[i].innerText=="Farm Tractor")texth2[i].innerText="农场工人2";
+            if(texth2[i].innerText=="Lumber Yard")texth2[i].innerText="木材仓库";
+            if(texth2[i].innerText=="Lumberjack House")texth2[i].innerText="砍树工人";
+            if(texth2[i].innerText=="Oak Tree Farm")texth2[i].innerText="树林";
+            if(texth2[i].innerText=="Pinot Noir Vines")texth2[i].innerText="黑葡萄";
+            if(texth2[i].innerText=="Pumpkin Patch")texth2[i].innerText="南瓜";
+            if(texth2[i].innerText=="Salt Field")texth2[i].innerText="海盐";
+            if(texth2[i].innerText=="Silo")texth2[i].innerText="粮食仓库";
+            if(texth2[i].innerText=="Storehouse")texth2[i].innerText="仓库";
+            if(texth2[i].innerText=="Sugarcane Field")texth2[i].innerText="甘蔗";
+            if(texth2[i].innerText=="The Logger House")texth2[i].innerText="伐木工人";
+            if(texth2[i].innerText=="Tree Farm")texth2[i].innerText="树木";
+            if(texth2[i].innerText=="Well")texth2[i].innerText="水井";
+            if(texth2[i].innerText=="Wheat Field")texth2[i].innerText="小麦";
+            if(texth2[i].innerText=="Wind Pump")texth2[i].innerText="风力水泵";
+            if(texth2[i].innerText=="Wind Mill")texth2[i].innerText="风力机";
+            if(texth2[i].innerText=="Winery")texth2[i].innerText="酒庄";
+            if(texth2[i].innerText=="Wood Shed")texth2[i].innerText="木头仓库";
+            if(texth2[i].innerText=="ATV")texth2[i].innerText="饲养员进阶";
+            if(texth2[i].innerText=="Chicken Coop")texth2[i].innerText="鸡笼";
+            if(texth2[i].innerText=="Feed Mill")texth2[i].innerText="饲料加工";
+            if(texth2[i].innerText=="Milk Barn")texth2[i].innerText="牛棚";
+            if(texth2[i].innerText=="Ranch House")texth2[i].innerText="饲养员";
+            if(texth2[i].innerText=="Sheep Pen")texth2[i].innerText="羊棚";
+            if(texth2[i].innerText=="Trough")texth2[i].innerText="饲料槽";
+            if(texth2[i].innerText=="Dirt Road")texth2[i].innerText="水泥路";
+            if(texth2[i].innerText=="Pasture")texth2[i].innerText="牧场";
+            if(texth2[i].innerText=="Paved Road")texth2[i].innerText="泊油路";
+            if(texth2[i].innerText=="Pond")texth2[i].innerText="池塘";
+            if(texth2[i].innerText=="Builder House")texth2[i].innerText="建筑工人";
+            if(texth2[i].innerText=="Fabric Plant")texth2[i].innerText="面料工厂";
+            if(texth2[i].innerText=="Forklift")texth2[i].innerText="叉车";
+            if(texth2[i].innerText=="Fuel Storage")texth2[i].innerText="燃油储存";
+            if(texth2[i].innerText=="Glass Factory")texth2[i].innerText="玻璃工厂";
+            if(texth2[i].innerText=="Lunber Mill")texth2[i].innerText="木材加工";
+            if(texth2[i].innerText=="Mine")texth2[i].innerText="矿工";
+            if(texth2[i].innerText=="Nuclear Power")texth2[i].innerText="核能";
+            if(texth2[i].innerText=="Oil Pump")texth2[i].innerText="油泵";
+            if(texth2[i].innerText=="Power Plant")texth2[i].innerText="电厂";
+            if(texth2[i].innerText=="Refinery")texth2[i].innerText="炼油厂";
+            if(texth2[i].innerText=="Sand Mine")texth2[i].innerText="沙场";
+            if(texth2[i].innerText=="Steel Mill")texth2[i].innerText="钢厂";
+            if(texth2[i].innerText=="Warehouse")texth2[i].innerText="仓库";
+            if(texth2[i].innerText=="Water Facility")texth2[i].innerText="水桶制造";
+            if(texth2[i].innerText=="Water Pump")texth2[i].innerText="水泵";
+            if(texth2[i].innerText=="Wind Turbine")texth2[i].innerText="风力发电机";
+            if(texth2[i].innerText=="Worker house")texth2[i].innerText="工人";
+            if(texth2[i].innerText=="Freight Pier")texth2[i].innerText="货运码头";
+            if(texth2[i].innerText=="Trade Depot")texth2[i].innerText="贸易司机";
+            if(texth2[i].innerText=="Trade Pier")texth2[i].innerText="贸易码头";
+            if(texth2[i].innerText=="Output:")texth2[i].innerText="产出";
+            if(texth2[i].innerText=="Language")texth2[i].innerText="语言";
+            if(texth2[i].innerText=="Graphic Quality")texth2[i].innerText="画面质量";
+
+            if(texth2[i].innerText=="Shadows")texth2[i].innerText="阴影";
+            if(texth2[i].innerText=="Anti-Aliasing")texth2[i].innerText="抗锯齿";
+            if(texth2[i].innerText=="FPS Counter")texth2[i].innerText="FPS";
+            if(texth2[i].innerText=="Status Overlay")texth2[i].innerText="状态";
+            if(texth2[i].innerText=="Music")texth2[i].innerText="音乐";
+            if(texth2[i].innerText=="Sound Effects")texth2[i].innerText="音效";
+             if(texth2[i].innerText=="Free")texth2[i].innerText="免费";
+
+             if(texth2[i].innerText=="Dough")texth2[i].innerText="面团";
+            if(texth2[i].innerText=="Baguette")texth2[i].innerText="面包";
+            if(texth2[i].innerText=="Cabernet Grapes")texth2[i].innerText="赤霞葡萄";
+            if(texth2[i].innerText=="Batter")texth2[i].innerText="面糊";
+            if(texth2[i].innerText=="Cake")texth2[i].innerText="蛋糕";
+            if(texth2[i].innerText=="Pumpkin Pie")texth2[i].innerText="南瓜派";
+            if(texth2[i].innerText=="Chardonnay Grapes")texth2[i].innerText="霞多丽葡萄";
+            if(texth2[i].innerText=="Cotton")texth2[i].innerText="棉布";
+            if(texth2[i].innerText=="Oak Wood")texth2[i].innerText="橡木";
+            if(texth2[i].innerText=="Pinot Noir Grapes")texth2[i].innerText="黑比诺葡萄";
+            if(texth2[i].innerText=="Pumpkin")texth2[i].innerText="南瓜";
+            if(texth2[i].innerText=="Brine")texth2[i].innerText="盐水";
+            if(texth2[i].innerText=="Sugarcane")texth2[i].innerText="甘蔗";
+            if(texth2[i].innerText=="Wheat")texth2[i].innerText="小麦";
+            if(texth2[i].innerText=="Water")texth2[i].innerText="水";
+            if(texth2[i].innerText=="Flour")texth2[i].innerText="面粉";
+            if(texth2[i].innerText=="Sugar")texth2[i].innerText="糖";
+            if(texth2[i].innerText=="Salt")texth2[i].innerText="盐";
+            if(texth2[i].innerText=="Pinot Noir")texth2[i].innerText="黑比诺";
+            if(texth2[i].innerText=="Cabernet Sauvignon")texth2[i].innerText="赤霞珠";
+            if(texth2[i].innerText=="Chardonnay")texth2[i].innerText="霞多丽";
+            if(texth2[i].innerText=="Eggs")texth2[i].innerText="蛋";
+            if(texth2[i].innerText=="Feed")texth2[i].innerText="饲料";
+            if(texth2[i].innerText=="Milk")texth2[i].innerText="牛奶";
+            if(texth2[i].innerText=="Wool")texth2[i].innerText="羊毛";
+            if(texth2[i].innerText=="Cotton Yarn")texth2[i].innerText="棉线团";
+            if(texth2[i].innerText=="Wool Yarm")texth2[i].innerText="毛纱";
+            if(texth2[i].innerText=="Uniforms")texth2[i].innerText="制服";
+            if(texth2[i].innerText=="Wine Bottle")texth2[i].innerText="酒瓶";
+            if(texth2[i].innerText=="Lumber")texth2[i].innerText="木材";
+            if(texth2[i].innerText=="Oak Barrel")texth2[i].innerText="橡木桶";
+            if(texth2[i].innerText=="Lron")texth2[i].innerText="铁";
+            if(texth2[i].innerText=="Chromium")texth2[i].innerText="铬";
+            if(texth2[i].innerText=="Limestone")texth2[i].innerText="石灰石";
+            if(texth2[i].innerText=="Energy")texth2[i].innerText="能源";
+            if(texth2[i].innerText=="Crude Oil")texth2[i].innerText="原油";
+            if(texth2[i].innerText=="Petroleum")texth2[i].innerText="石油";
+            if(texth2[i].innerText=="Gasoline")texth2[i].innerText="汽油";
+            if(texth2[i].innerText=="Jet Fuel")texth2[i].innerText="喷气燃料";
+            if(texth2[i].innerText=="Silica")texth2[i].innerText="二氧化硅";
+            if(texth2[i].innerText=="Steel")texth2[i].innerText="钢";
+            if(texth2[i].innerText=="Blue Steel")texth2[i].innerText="蓝钢";
+            if(texth2[i].innerText=="Water Drum")texth2[i].innerText="水桶";
+
+
+
+
+             if(texth2[i].innerText=="Cabernet is the most planted wine grape in the world!  Grapes from these vines can be used to make delicious and valuable wine.")texth2[i].innerText="赤霞珠是世界上种植最多的酿酒葡萄！这些葡萄藤的葡萄可以用来酿造美味而有价值的葡萄酒。";
+            if(texth2[i].innerText=="Chardonnay is the most widely distributed white wine grape in the world!  Grapes from these vines can be used to make delicious and valuable wine.")texth2[i].innerText="霞多丽是世界上分布最广的白葡萄酒葡萄！这些葡萄藤的葡萄可以用来酿造美味而有价值的葡萄酒。";
+            if(texth2[i].innerText=="Cotton fields can be harvested for cotton, which is used to craft Wool.")texth2[i].innerText="棉花田可以收获棉花，用来制作羊毛。";
+            if(texth2[i].innerText=="Wood from oak trees can be used to make Barrels, popular for aging wine in.")texth2[i].innerText="橡树的木材可用于制作酒桶，用于陈酿葡萄酒。";
+            if(texth2[i].innerText=="Pinot Noir is one of the oldest grapes in the world!  Grapes from these vines can be used to make delicious and valuable wine.")texth2[i].innerText="黑比诺是世界上最古老的葡萄之一！这些葡萄藤的葡萄可以用来酿造美味而有价值的葡萄酒。";
+            if(texth2[i].innerText=="Pumpkins are a seasonal treat!  They require a lot of water to grow.")texth2[i].innerText="南瓜是时令美食！它们需要大量的水才能生长。";
+            if(texth2[i].innerText=="Your farmers can harvest brine from Salt Fields, which is used to make salt.")texth2[i].innerText="您的农民可以从用于制盐的盐田收获盐水。";
+            if(texth2[i].innerText=="Store basic crops here.  Holds up to 20 items.")texth2[i].innerText="在这里存放基本作物。最多可容纳 20 件物品。";
+            if(texth2[i].innerText=="Like to craft? You'll need a Storehouse to keep your crafted goods fresh.")texth2[i].innerText="喜欢手工？你需要一个仓库来保持你的手工艺品新鲜。";
+            if(texth2[i].innerText=="If you want sugar, you'll have to start with a Sugarcane field!")texth2[i].innerText="如果你想要糖，你必须从甘蔗田开始";
+            if(texth2[i].innerText=="Plant tree farms to harvest wood. Tree farms do best close to water and away from shade.")texth2[i].innerText="种植林场以收获木材。林场最好靠近水源，远离阴凉处。";
+            if(texth2[i].innerText=="Don't have the money to buy a bunch of fancy ponds? Wells are the next best way to supply your farm with the water it needs to grow.")texth2[i].innerText="没钱买一堆花哨的池塘？水井是为您的农场提供生长所需水的次佳方式。";
+            if(texth2[i].innerText=="Your farmers can harvest wheat here, which is used to make Flour.")texth2[i].innerText="你的农民可以在这里收获小麦，用来制作面粉。";
+            if(texth2[i].innerText=="Store your wood and lumber here. Holds 10 items.")texth2[i].innerText="将您的木材和木材存放在这里。可容纳 10 件物品。";
+            if(texth2[i].innerText=="Your farmers and workers can harvest a Wind Pump to get water FAST.")texth2[i].innerText="您的农民和工人可以收获一个风泵来快速取水.";
+            if(texth2[i].innerText=="A must-have if you have animals. Animals need Feed to thrive!")texth2[i].innerText="如果你有动物，这是必须的。动物需要饲料才能茁壮成长！";
+            if(texth2[i].innerText=="Help your animals live their best life. Animals don't produce the goods unless they eat well at a trough.")texth2[i].innerText="帮助您的动物过上最好的生活。除非动物在低谷吃得好，否则它们不会生产产品。";
+            if(texth2[i].innerText=="A basic requirement for most buildings. A dirt road also helps your farmers move around more quickly.")texth2[i].innerText="大多数建筑物的基本要求。土路还可以帮助您的农民更快地四处走动。";
+            if(texth2[i].innerText=="A lovely meadow that serves as grazing land for your animals.")texth2[i].innerText="一个可爱的草地，作为您的动物的牧场。";
+            if(texth2[i].innerText=="Help your workers get around quickly with a paved road. Necessary for most industrial buildings.")texth2[i].innerText="使用铺好的道路帮助您的员工快速出行。大多数工业建筑都需要。";
+            if(texth2[i].innerText=="A pond can provide water to nearby crops and trees.")texth2[i].innerText="池塘可以为附近的农作物和树木供水。";
+            if(texth2[i].innerText=="Stores up to 40 pretroleum, gasoline, or jet fuel.")texth2[i].innerText="最多可存储 40 种石油、汽油或喷气燃料。";
+            if(texth2[i].innerText=="An Oil Pump pulls bubbling crude oil up from the earth.")texth2[i].innerText="油泵将冒泡的原油从地球上拉上来。";
+            if(texth2[i].innerText=="Harvest Silica from the earth with the Sand Mine.")texth2[i].innerText="使用沙矿从地球上采集二氧化硅。";
+            if(texth2[i].innerText=="Store your industrial goods in a Warehouse. Stores up to 20 goods.")texth2[i].innerText="将您的工业产品存放在仓库中。最多可存放 20 件商品。";
+            if(texth2[i].innerText=="Place next to an industrial building to supply it with industrial grade water.")texth2[i].innerText="放置在工业建筑旁边，为其供应工业级水。";
+            if(texth2[i].innerText=="Get reliable, clean energy. What it lacks in speed it makes up for in clean, fresh air.")texth2[i].innerText="获得可靠、清洁的能源。它在速度上的不足，在干净、新鲜的空气中得到了弥补。";
+
+        }
+
+
+        //商城底部导航
+        var textp=document.getElementsByTagName("p");
+        if(textp)
+        for(i=0;i<textp.length;++i)
+        {
+              if(textp[i].innerText=="Farm")textp[i].innerText="农场";
+              if(textp[i].innerText=="Ranch")textp[i].innerText="牧场";
+              if(textp[i].innerText=="Terrain")textp[i].innerText="地形";
+              if(textp[i].innerText=="Industrial")textp[i].innerText="工厂";
+              if(textp[i].innerText=="Trade")textp[i].innerText="贸易";
+              if(textp[i].innerText=="RETURN")textp[i].innerText="继续";
+              if(textp[i].innerText=="JOIN")textp[i].innerText="加入";
+              if(textp[i].innerText=="SELL")textp[i].innerText="卖出";
+
+              if(textp[i].innerText=="Butter")textp[i].innerText="黄油";
+            if(textp[i].innerText=="Rotate")textp[i].innerText="旋转";
+            if(textp[i].innerText=="Remove")textp[i].innerText="摧毁";
+            if(textp[i].innerText=="Cancel")textp[i].innerText="摧毁";
+            if(textp[i].innerText=="Craft")textp[i].innerText="工艺";
+            if(textp[i].innerText=="Flush")textp[i].innerText="重置";
+            if(textp[i].innerText=="Sell")textp[i].innerText="销售货物";
+            if(textp[i].innerText=="Dough")textp[i].innerText="面团";
+            if(textp[i].innerText=="Baguette")textp[i].innerText="面包";
+            if(textp[i].innerText=="Cabernet Grapes")textp[i].innerText="赤霞葡萄";
+            if(textp[i].innerText=="Batter")textp[i].innerText="面糊";
+            if(textp[i].innerText=="Cake")textp[i].innerText="蛋糕";
+            if(textp[i].innerText=="Pumpkin Pie")textp[i].innerText="南瓜派";
+            if(textp[i].innerText=="Chardonnay Grapes")textp[i].innerText="霞多丽葡萄";
+            if(textp[i].innerText=="Cotton")textp[i].innerText="棉布";
+            if(textp[i].innerText=="Oak Wood")textp[i].innerText="橡木";
+            if(textp[i].innerText=="Pinot Noir Grapes")textp[i].innerText="黑比诺葡萄";
+            if(textp[i].innerText=="Pumpkin")textp[i].innerText="南瓜";
+            if(textp[i].innerText=="Brine")textp[i].innerText="盐水";
+            if(textp[i].innerText=="Sugarcane")textp[i].innerText="甘蔗";
+            if(textp[i].innerText=="Wheat")textp[i].innerText="小麦";
+            if(textp[i].innerText=="Water")textp[i].innerText="水";
+            if(textp[i].innerText=="Flour")textp[i].innerText="面粉";
+            if(textp[i].innerText=="Sugar")textp[i].innerText="糖";
+            if(textp[i].innerText=="Salt")textp[i].innerText="盐";
+            if(textp[i].innerText=="Pinot Noir")textp[i].innerText="黑比诺";
+            if(textp[i].innerText=="Cabernet Sauvignon")textp[i].innerText="赤霞珠";
+            if(textp[i].innerText=="Chardonnay")textp[i].innerText="霞多丽";
+            if(textp[i].innerText=="Eggs")textp[i].innerText="蛋";
+            if(textp[i].innerText=="Feed")textp[i].innerText="饲料";
+            if(textp[i].innerText=="Milk")textp[i].innerText="牛奶";
+            if(textp[i].innerText=="Wool")textp[i].innerText="羊毛";
+            if(textp[i].innerText=="Cotton Yarn")textp[i].innerText="棉线团";
+            if(textp[i].innerText=="Wool Yarm")textp[i].innerText="毛纱";
+            if(textp[i].innerText=="Uniforms")textp[i].innerText="制服";
+            if(textp[i].innerText=="Wine Bottle")textp[i].innerText="酒瓶";
+            if(textp[i].innerText=="Lumber")textp[i].innerText="木材";
+            if(textp[i].innerText=="Oak Barrel")textp[i].innerText="橡木桶";
+            if(textp[i].innerText=="Lron")textp[i].innerText="铁";
+            if(textp[i].innerText=="Chromium")textp[i].innerText="铬";
+            if(textp[i].innerText=="Limestone")textp[i].innerText="石灰石";
+            if(textp[i].innerText=="Energy")textp[i].innerText="能源";
+            if(textp[i].innerText=="Crude Oil")textp[i].innerText="原油";
+            if(textp[i].innerText=="Petroleum")textp[i].innerText="石油";
+            if(textp[i].innerText=="Gasoline")textp[i].innerText="汽油";
+            if(textp[i].innerText=="Jet Fuel")textp[i].innerText="喷气燃料";
+            if(textp[i].innerText=="Silica")textp[i].innerText="二氧化硅";
+            if(textp[i].innerText=="Steel")textp[i].innerText="钢";
+            if(textp[i].innerText=="Blue Steel")textp[i].innerText="蓝钢";
+            if(textp[i].innerText=="Water Drum")textp[i].innerText="水桶";
+
+             if(textp[i].innerText=="Previous Game Winner:")textp[i].innerText="上一场比赛的获胜者：";
+        }
+
+        var span=document.getElementsByTagName("span");
+        if(span)
+        for(i=0;i<span.length;++i)
+        {
+            if(span[i].innerText=="Materials Needed:")span[i].innerText="需要材料:";
+            if(span[i].innerText=="Labor:")span[i].innerText="劳工:";
+            if(span[i].innerText=="Must place near Road")span[i].innerText="必须靠近路";
+            span[i].innerText=span[i].innerText.replace("Seconds","秒");
+            span[i].innerText=span[i].innerText.replace("Weekly Competition","周赛");
+            span[i].innerText=span[i].innerText.replace("Free","免费");
+            span[i].innerText=span[i].innerText.replace("Server Name","服务器");
+            span[i].innerText=span[i].innerText.replace("Population","人数");
+            span[i].innerText=span[i].innerText.replace("Time Left","剩余时间");
+            span[i].innerText=span[i].innerText.replace("CHOOSE SERVER","选择服务器");
+            span[i].innerText=span[i].innerText.replace("Days","天");
+            span[i].innerText=span[i].innerText.replace("ACTIVE","激活");
+
+            span[i].innerText=span[i].innerText.replace("Return to Gala","回到Gala");
+            span[i].innerText=span[i].innerText.replace("Create New Town","重建城市");
+            span[i].innerText=span[i].innerText.replace("Change Server","选择服务器");
+            span[i].innerText=span[i].innerText.replace("OFF","关");
+            span[i].innerText=span[i].innerText.replace("ON","开");
+            span[i].innerText=span[i].innerText.replace("Low","低");
+            span[i].innerText=span[i].innerText.replace("Med","中");
+            span[i].innerText=span[i].innerText.replace("High","高");
+
+            span[i].innerText=span[i].innerText.replace("TOP","前");
+            span[i].innerText=span[i].innerText.replace("BOTTOM","后");
+            span[i].innerText=span[i].innerText.replace("MY RANK","我的排名");
+            span[i].innerText=span[i].innerText.replace("JUMP TO:","跳转:");
+            span[i].innerText=span[i].innerText.replace("SERVER:","服务器:");
+
+
+        }
+        var textdiv=document.getElementsByTagName("div");
+        if(textdiv)
+        for(i=0;i<textdiv.length;++i)
+        {
+            if(textdiv[i].innerText=="Buy a bakery and make loads of dough$$$ from selling bread and other basic crafted goods.")textdiv[i].innerText="购买面包店并通过出售面包和其他基本手工艺品制作大量面团。";
+            if(textdiv[i].innerText=="Impress friends and strangers alike by creating upscale, extremely valuable confections in your Cakery.")textdiv[i].innerText="通过在您的蛋糕店中制作高档、极有价值的糖果，给朋友和陌生人留下深刻印象。";
+            if(textdiv[i].innerText=="Invest in a Farm House to bring another friendly farmer to your town.")textdiv[i].innerText="投资农舍，为您的城镇带来另一位友好的农民。";
+            if(textdiv[i].innerText=="Want your farm to be faster and more efficient? A tractor brings the quickest farmer to your town. Get ready to be blown away.")textdiv[i].innerText="想让您的农场更快更高效吗？拖拉机将最快的农民带到您的城镇。准备好被吹走。";
+            if(textdiv[i].innerText=="If you have trees or a tree farm, you'll need a lumberjack to help!")textdiv[i].innerText="如果你有树木或林场，你需要一个伐木工人来帮忙！";
+            if(textdiv[i].innerText=="Magnus is the lumberjacks older brother. He's a bigger, faster, and tougher lumberjack. Period.")textdiv[i].innerText="马格努斯是伐木工人的哥哥。他是一个更大、更快、更强壮的伐木工人。时期。";
+            if(textdiv[i].innerText=="Harness the power of the wind to grind your crops into craft-ready ingredients.")textdiv[i].innerText="利用风的力量将您的庄稼研磨成可用于工艺的原料。";
+            if(textdiv[i].innerText=="Transform grapes into delicious and valuable wine!")textdiv[i].innerText="将葡萄变成美味而有价值的葡萄酒！";
+            if(textdiv[i].innerText=="The ATV gives your Rancher a faster means of travel!")textdiv[i].innerText="ATV 为您的牧场主提供更快的出行方式！";
+            if(textdiv[i].innerText=="If you want eggs, you probably want chickens. Can't have one without the other!")textdiv[i].innerText="如果你想要鸡蛋，你可能想要鸡。不能没有另一个！";
+            if(textdiv[i].innerText=="Got milk? Or cows? Not until you invest in a Milk Barn.")textdiv[i].innerText="有牛奶吗？还是牛？直到您投资牛奶谷仓";
+            if(textdiv[i].innerText=="Ranchers will tend to your animals.")textdiv[i].innerText="牧场主会照顾你的动物。";
+            if(textdiv[i].innerText=="If you like sweet cuddly baby lambs and dream of setting up a wool empire, then well, Sheep Pens are for you.")textdiv[i].innerText="如果您喜欢甜美可爱的小羊羔并梦想建立一个羊毛帝国，那么 Sheep Pens 适合您。";
+            if(textdiv[i].innerText=="A builder will bring materials to a construction site.")textdiv[i].innerText="建筑商将材料带到建筑工地。";
+            if(textdiv[i].innerText=="Turns your wool and cotton into uniforms for Workers.")textdiv[i].innerText="将您的羊毛和棉花变成工人的制服。";
+            if(textdiv[i].innerText=="Fork Lifts get your industrial work done at lightening speed.")textdiv[i].innerText="叉车以闪电般的速度完成您的工业工作。";
+            if(textdiv[i].innerText=="Process raw materials into glass products.")textdiv[i].innerText="将原材料加工成玻璃制品。";
+            if(textdiv[i].innerText=="Turn those logs of wood into Grade A building material using a Lumber Mill.")textdiv[i].innerText="使用木材厂将这些原木变成 A 级建筑材料。";
+            if(textdiv[i].innerText=="If you have a mountain town, use a Mine to get valuable resources from the mountain!")textdiv[i].innerText="如果您有山城，请使用矿山从山上获取宝贵的资源！";
+            if(textdiv[i].innerText=="Get clean, SUPER FAST, energy from a Nuclear Power Plant. Don't worry, it won't blow up!")textdiv[i].innerText="从核电站获取清洁、超快的能源。别担心，它不会爆炸！";
+            if(textdiv[i].innerText=="Burn crude oil and get energy from a Power Plant.")textdiv[i].innerText="燃烧原油并从发电厂获取能量。";
+            if(textdiv[i].innerText=="Refine Crude Oil and make Gasoline or other petrochemical products!")textdiv[i].innerText="提炼原油，制造汽油或其他石化产品！";
+            if(textdiv[i].innerText=="Smelt raw Iron into valuable Steel!")textdiv[i].innerText="将生铁熔炼成有价值的钢！";
+            if(textdiv[i].innerText=="Converts buckets of water into industrial water drums!")textdiv[i].innerText="将水桶变成工业水桶！";
+            if(textdiv[i].innerText=="Invest in a Worker House to bring a hard working industrial Worker to your town!")textdiv[i].innerText="投资建造工人之家，将勤劳的产业工人带到您的城镇！";
+            if(textdiv[i].innerText=="Send 100 goods to other towns slowly over waterways.")textdiv[i].innerText="将 100 件货物通过水路慢慢运送到其他城镇。";
+            if(textdiv[i].innerText=="Send 10 goods to other towns slowly over land roads.")textdiv[i].innerText="通过陆路缓慢地将 10 件货物发送到其他城镇。";
+            if(textdiv[i].innerText=="Send 10 goods to other towns slowly over waterways.")textdiv[i].innerText="将 10 件货物通过水路慢慢运送到其他城镇。";
+
+            if(textdiv[i].innerText=="You need 10 items to load the Truck!")textdiv[i].innerText="装载卡车至少需要10件物品！";
+
+            if(textdiv[i].innerText=="DAYS")textdiv[i].innerText="天";
+            if(textdiv[i].innerText=="HOURS")textdiv[i].innerText="小时";
+            if(textdiv[i].innerText=="MIN")textdiv[i].innerText="分钟";
+            if(textdiv[i].innerText=="SEC")textdiv[i].innerText="秒";
+
+        }
+
+    }
+
+
+})();
